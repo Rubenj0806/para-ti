@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Tengo algo que decirte</title>
+  <meta name="description" content="Algo que quería decirte." />
+  <meta name="theme-color" content="#121013" />
+
+  <!-- Vista previa al compartir el enlace (WhatsApp, Instagram…) -->
+  <meta property="og:title" content="Tengo algo que decirte" />
+  <meta property="og:description" content="Solo es un momento." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23C8475A' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..500,0..100&family=Outfit:wght@300..500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Brillo cálido que se enciende durante la revelación -->
+  <div class="glow" aria-hidden="true"></div>
+
+  <main class="stage">
+    <!-- ───────── Pantalla 1: la invitación ───────── -->
+    <section class="screen intro" id="intro" aria-labelledby="intro-title">
+      <svg class="intro-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+
+      <!-- ✏️ Puedes cambiar estos textos -->
+      <h1 class="intro-title" id="intro-title">Tengo algo que decirte.</h1>
+
+      <button class="cta" id="reveal-btn" type="button">Presiona aquí</button>
+
+      <p class="intro-hint">Me ha costado un poco enviarte esto.</p>
+    </section>
+
+    <!-- ───────── Pantalla 2: la revelación ───────── -->
+    <section class="screen reveal" id="reveal" aria-live="polite" hidden>
+      <div class="big-heart" id="big-heart" aria-hidden="true">
+        <span class="ring"></span>
+        <svg viewBox="0 0 24 24">
+          <path class="heart-fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          <path class="heart-line" pathLength="100" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+
+      <!-- ✏️ NOMBRE (puedes borrar esta línea si no lo quieres) -->
+      <p class="name" id="name">Daniel,</p>
+
+      <!-- ✏️ MENSAJE PRINCIPAL -->
+      <h2 class="message" id="message">me gustas.</h2>
+
+      <!-- ✏️ FRASE SECUNDARIA -->
+      <p class="sub" id="sub">Y quería que lo supieras.</p>
+    </section>
+  </main>
+
+  <!-- Capa de partículas: no bloquea clics -->
+  <div class="fx" id="fx" aria-hidden="true"></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

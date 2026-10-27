@@ -1,0 +1,507 @@
+/* ─────────────────────────────────────────────
+   Tengo algo que decirte
+   Estilo sobrio: noche cálida, marfil y un rojo apagado
+   ───────────────────────────────────────────── */
+
+:root {
+  --night: #121013;
+  --night-warm: #241519;
+  --ivory: #EFE6DF;
+  --ivory-soft: rgba(239, 230, 223, 0.62);
+  --ivory-faint: rgba(239, 230, 223, 0.22);
+  --red: #C8475A;
+  --red-soft: #E07A85;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Outfit", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 0.8, 0.25, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ivory);
+  background-color: var(--night);
+  background-image:
+    radial-gradient(80vmax 60vmax at 50% -20%, var(--night-warm), transparent 70%),
+    radial-gradient(60vmax 50vmax at 50% 120%, rgba(36, 21, 25, 0.8), transparent 70%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Unas pocas estrellas muy tenues */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(1px 1px at 18% 22%, rgba(239, 230, 223, 0.5), transparent 60%),
+    radial-gradient(1px 1px at 78% 14%, rgba(239, 230, 223, 0.35), transparent 60%),
+    radial-gradient(1.2px 1.2px at 64% 72%, rgba(239, 230, 223, 0.3), transparent 60%),
+    radial-gradient(1px 1px at 32% 84%, rgba(239, 230, 223, 0.4), transparent 60%),
+    radial-gradient(1px 1px at 88% 58%, rgba(224, 122, 133, 0.45), transparent 60%),
+    radial-gradient(1px 1px at 8% 60%, rgba(239, 230, 223, 0.35), transparent 60%);
+  background-size: 460px 460px;
+}
+
+/* Brillo cálido de la revelación */
+.glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 44%, rgba(200, 71, 90, 0.22), rgba(200, 71, 90, 0.06) 40%, transparent 70%);
+  transition: opacity 2s ease;
+}
+
+body.is-revealed .glow {
+  opacity: 1;
+}
+
+/* ───────── Escenario ───────── */
+
+.stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding:
+    max(24px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+}
+
+.screen {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 40rem;
+}
+
+.screen[hidden] {
+  display: none;
+}
+
+.screen:focus {
+  outline: none;
+}
+
+/* ───────── Pantalla 1 ───────── */
+
+.intro {
+  gap: 1.75rem;
+  transition: opacity 0.6s ease, transform 0.7s var(--ease-out);
+}
+
+.intro-mark {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1.4px;
+  vector-effect: non-scaling-stroke;
+  animation: soft-pulse 2.8s ease-in-out infinite;
+}
+
+.intro-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 320;
+  font-size: clamp(2rem, 7.5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  word-spacing: 0.04em;
+  font-variation-settings: "SOFT" 20, "opsz" 96;
+  text-wrap: balance;
+}
+
+.cta {
+  position: relative;
+  margin-top: 0.5rem;
+  min-height: 58px;
+  min-width: 13rem;
+  padding: 1em 2.4em;
+  border: 1px solid rgba(239, 230, 223, 0.55);
+  border-radius: 999px;
+  background: transparent;
+  font: 400 1.05rem/1 var(--font-body);
+  letter-spacing: 0.04em;
+  color: var(--ivory);
+  cursor: pointer;
+  touch-action: manipulation;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 0 0 0 rgba(200, 71, 90, 0);
+  animation: cta-glow 3.6s ease-in-out infinite;
+  transition:
+    color 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.45s var(--ease-out),
+    opacity 0.45s ease;
+}
+
+/* Relleno que sube al pasar el ratón o al tocar */
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ivory);
+  transform: translateY(101%);
+  transition: transform 0.45s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .cta:hover {
+    color: var(--night);
+    border-color: var(--ivory);
+  }
+  .cta:hover::before {
+    transform: translateY(0);
+  }
+}
+
+.cta:active {
+  transform: scale(0.97);
+  transition-duration: 0.12s;
+}
+
+.cta:active::before {
+  transform: translateY(0);
+}
+
+.cta:active {
+  color: var(--night);
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--red-soft);
+  outline-offset: 5px;
+}
+
+.intro-hint {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  color: var(--ivory-soft);
+}
+
+/* Al pulsar: la pantalla se retira con calma */
+body.is-leaving .intro {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+body.is-leaving .cta {
+  animation: none;
+}
+
+/* ───────── Pantalla 2 ───────── */
+
+.big-heart {
+  --dy: 0px;
+  position: relative;
+  width: clamp(64px, 17vw, 88px);
+  aspect-ratio: 1;
+  margin-bottom: clamp(1.2rem, 3.5vh, 2rem);
+  opacity: 0;
+}
+
+.big-heart svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.heart-line {
+  fill: none;
+  stroke: var(--red-soft);
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.heart-fill {
+  fill: var(--red);
+  opacity: 0;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(224, 122, 133, 0.6);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.name {
+  margin: 0 0 0.2em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 320;
+  font-size: clamp(1.7rem, 7vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variation-settings: "SOFT" 40, "opsz" 72;
+  color: var(--red-soft);
+  opacity: 0;
+}
+
+.message {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 340;
+  font-size: clamp(3.4rem, 16vw, 7.2rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  word-spacing: 0.08em;
+  font-variation-settings: "SOFT" 25, "opsz" 144;
+  color: var(--ivory);
+  padding: 0.06em 0.08em 0.1em;
+}
+
+.message .word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.message .ch {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.message .emoji {
+  font-size: 0.6em;
+  vertical-align: 0.15em;
+  margin-left: 0.1em;
+}
+
+.sub {
+  margin: clamp(1.1rem, 3vh, 1.6rem) 0 0;
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--ivory-soft);
+  opacity: 0;
+}
+
+/* ───────── Secuencia de revelación ─────────
+   0.0s  aparece el contorno del corazón en el centro
+   1.3s  se rellena, late una vez y suelta un anillo y unas chispas
+   2.0s  sube a su sitio
+   2.2s  aparece el nombre
+   2.7s  aparece «me gustas.»
+   3.7s  aparece la frase secundaria                                  */
+
+.reveal.is-on .big-heart {
+  animation: heart-place 2.8s var(--ease-in-out) forwards;
+}
+
+.reveal.is-on .heart-line {
+  animation: draw 1.4s var(--ease-in-out) 0.1s forwards;
+}
+
+.reveal.is-on .heart-fill {
+  animation: fill-in 0.7s ease 1.2s forwards;
+}
+
+.reveal.is-on .big-heart svg {
+  animation:
+    beat-once 0.7s var(--ease-out) 1.35s,
+    heartbeat 2.4s ease-in-out 3.2s infinite;
+}
+
+.reveal.is-on .ring {
+  animation: ring 1.4s var(--ease-out) 1.4s forwards;
+}
+
+.reveal.is-on .name {
+  animation: fade-up 1s var(--ease-out) 2.2s forwards;
+}
+
+.reveal.is-on .message .ch {
+  animation: letter-in 1s var(--ease-out) forwards;
+  animation-delay: calc(2.7s + var(--i) * 60ms);
+}
+
+.reveal.is-on .sub {
+  animation: fade-up 1s var(--ease-out) 3.7s forwards;
+}
+
+
+/* ───────── Capa de partículas ───────── */
+
+.fx {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.p-ember,
+.p-float {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 calc(var(--size) * 2.5) var(--c);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.p-ember {
+  left: var(--x);
+  top: var(--y);
+  animation: ember var(--dur) cubic-bezier(0.15, 0.7, 0.3, 1) var(--delay, 0s) forwards;
+}
+
+.p-float {
+  left: var(--x);
+  bottom: -12px;
+  animation: rise var(--dur) linear forwards;
+}
+
+/* ───────── Keyframes ───────── */
+
+@keyframes soft-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+@keyframes cta-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 71, 90, 0); }
+  50% { box-shadow: 0 0 28px 2px rgba(200, 71, 90, 0.28); }
+}
+
+@keyframes heart-place {
+  0% { opacity: 0; transform: translateY(var(--dy)) scale(1.9); }
+  6% { opacity: 1; }
+  70% { opacity: 1; transform: translateY(var(--dy)) scale(1.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes fill-in {
+  to { opacity: 1; }
+}
+
+@keyframes beat-once {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  10% { transform: scale(1.06); }
+  20% { transform: scale(1); }
+  30% { transform: scale(1.04); }
+  45% { transform: scale(1); }
+}
+
+@keyframes ring {
+  0% { opacity: 0.8; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(3.4); }
+}
+
+@keyframes letter-in {
+  0% { opacity: 0; transform: translateY(0.25em); filter: blur(8px); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ember {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  15% { opacity: var(--o); }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1);
+  }
+}
+
+@keyframes rise {
+  0% { opacity: 0; transform: translate(0, 0); }
+  15% { opacity: var(--o); }
+  75% { opacity: var(--o); }
+  100% { opacity: 0; transform: translate(var(--drift), calc(-100vh - 40px)); }
+}
+
+/* ───────── Pantallas bajitas (móvil en horizontal) ───────── */
+
+@media (max-height: 520px) {
+  .intro { gap: 1.1rem; }
+  .big-heart { width: 52px; margin-bottom: 0.8rem; }
+  .message { font-size: clamp(2.8rem, 14vh, 4.6rem); }
+  .sub { margin-top: 0.6rem; }
+}
+
+/* ───────── Menos movimiento ───────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-mark,
+  .cta,
+  .reveal.is-on .big-heart svg,
+  .reveal.is-on .ring {
+    animation: none !important;
+  }
+
+  body.is-leaving .intro {
+    transform: none;
+  }
+
+  .reveal.is-on .big-heart { animation: fade-in 0.6s ease forwards; }
+  .reveal.is-on .heart-line { animation: none; stroke-dashoffset: 0; }
+  .reveal.is-on .heart-fill { animation: fade-in 0.6s ease forwards; }
+  .reveal.is-on .name { animation: fade-in 0.6s ease 0.2s forwards; }
+  .reveal.is-on .message .ch { animation: fade-in 0.6s ease 0.3s forwards; }
+  .reveal.is-on .sub { animation: fade-in 0.6s ease 0.7s forwards; }
+}
